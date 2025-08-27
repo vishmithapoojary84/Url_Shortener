@@ -14,6 +14,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 app.post('/api/create',  (req, res) => {
 
     const { url } = req.body;
@@ -26,23 +30,30 @@ app.post('/api/create',  (req, res) => {
     res.send(nanoid(7));
   });
 
-// Optional GET route for redirect
-// app.get('/:shortId', async (req, res) => {
-//   try {
-//     const url = await ShortUrl.findOne({ short_url: req.params.shortId });
-//     if (!url) return res.status(404).json({ error: 'URL not found' });
-//     url.clicks++;
-//     await url.save();
-//     res.redirect(url.full_url);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
+
+app.get('/:id', async (req, res) => {
+ 
+    const {id} =  req.params;
+    const url = await urlSchema.findOne({short_url: id});
+if (url){
+  res.redirect(url.full_url);
+}
+else{
+  res.status(404).json("Not found");
+}
+});
 
 
+
+
+
+async function startServer() {
+  await connectDB();
   app.listen(3000, () => {
-    connectDB()
     console.log('Server listening on http://localhost:3000');
   });
+}
+
+startServer();
 
 
