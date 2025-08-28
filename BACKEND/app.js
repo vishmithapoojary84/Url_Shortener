@@ -6,6 +6,7 @@ import express from 'express';
 import short_url from './src/config/routes/short_url.route.js';
 import connectDB from "./src/config/mongo.config.js";
 import { redirectFromShortUrl } from './src/config/controller/short_url.controller.js';
+import { errorHandler } from './src/config/utils/ErorrHandler.js';
 
 
 
@@ -22,8 +23,9 @@ app.get('/', (req, res) => {
 //in *routes short url routes.js
 app.use('/api/create',short_url)
 
-
+//redirectfromshort url in *controller/short_url.controller.js
 app.get('/:id', redirectFromShortUrl);
+app.use(errorHandler)
 
 
 
