@@ -6,7 +6,7 @@ const App = () => {
   return (
     <div>
    <Home_page/>
-
+<Login_form></Login_form>
     </div>
   )
 }
