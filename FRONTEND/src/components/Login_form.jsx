@@ -2,26 +2,30 @@ import React, { useState } from 'react';
 import { loginUser } from '../api/user.api';
 
 
-const LoginForm = ({ state }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Login_form = ({ state }) => {
+    const [email, setEmail] = useState('vishmithahehe@gmail.com');
+    const [password, setPassword] = useState('password123');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-  
+ 
 
     const handleSubmit = async () => {
         setLoading(true);
         setError('');
 
         try {
-           await loginUser(password, email);
-         
+            const data = await loginUser(password, email);
+       
             setLoading(false);
-        
-        } catch (err) {
-            setLoading(false);
-            setError(err.message || 'Login failed. Please check your credentials.');
-        }
+            console.log("signin success")
+        }catch (err) {
+    setLoading(false);
+    
+    // Properly extract error message from server response
+    const msg = err.response?.data?.message || err.message || 'Login failed. Please check your credentials.';
+    
+    setError(msg);
+}
     };
 
     return (
@@ -86,4 +90,4 @@ const LoginForm = ({ state }) => {
     );
 };
 
-export default LoginForm;
+export default Login_form;

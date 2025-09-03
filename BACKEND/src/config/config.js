@@ -7,6 +7,6 @@
 export const cookieOptions = {
   httpOnly: true,
   secure: false, // disable secure for local dev on HTTP
-  sameSite: 'lax',
+  sameSite: 'Lax',
   maxAge: 1000 * 60 * 5 // 5 minutes
 };

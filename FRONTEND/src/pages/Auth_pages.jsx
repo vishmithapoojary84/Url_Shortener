@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Register_form from '../components/Register_form';
 
 const Auth_pages = () => {
-  const [Login, setLogin] = useState(false);
+  const [Login, setLogin] = useState(true);
  
 
   return (
