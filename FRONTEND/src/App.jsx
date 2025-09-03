@@ -1,13 +1,17 @@
 import React from 'react'
 
+
+import Auth_pages from './pages/Auth_pages.jsx';
+import Register_form from './components/Register_form.jsx';
 import Home_page from './pages/Home_page.jsx';
-import Login_form from './components/Login_form.jsx';
+
 const App = () => {
   return (
-    <div>
-   <Home_page/>
-<Login_form></Login_form>
-    </div>
+    <>
+
+      <Auth_pages />
+      
+    </>
   )
 }
 
