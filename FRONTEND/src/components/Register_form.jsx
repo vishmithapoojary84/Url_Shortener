@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { registerUser } from '../api/user.api';
+import { useNavigate } from '@tanstack/react-router';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/slice/authSlice';
 
 
 const Register_form = ({state}) => {
@@ -8,8 +11,8 @@ const Register_form = ({state}) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-
+const navigate=useNavigate();
+const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();    
     
@@ -25,7 +28,7 @@ const Register_form = ({state}) => {
       //registeruser is in *api user api
       const data = await registerUser(name, password, email);
       setLoading(false);
-      dispatch(login(data.user))
+      dispatch(logindata.user))
       navigate({to:"/dashboard"})
       setLoading(false);
     } catch (err) {

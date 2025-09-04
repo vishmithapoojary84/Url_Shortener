@@ -11,6 +11,7 @@ import {
 import { RootRoute, RouterProvider, createRouter } from '@tanstack/react-router' 
 import { routeTree } from './routing/routeTree.js'
 import store from './store/store.js'
+import { Provider } from 'react-redux'
 
 
 

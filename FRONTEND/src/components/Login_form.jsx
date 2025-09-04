@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api/user.api';
+import { useSelector,useDispatch } from 'react-redux';
 
-
+import { login } from '../store/slice/authSlice.js';
+import { useNavigate } from '@tanstack/react-router';
 const Login_form = ({ state }) => {
     const [email, setEmail] = useState('vishmithahehe@gmail.com');
     const [password, setPassword] = useState('password123');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
- 
-
+    const auth = useSelector((state) => state.auth);
+    const navigate=useNavigate();
+    const dispatch = useDispatch();
+    console.log(auth);
     const handleSubmit = async () => {
         setLoading(true);
         setError('');
 
         try {
-            const data = await loginUser(password, email);
-       
+            const data  = await loginUser(password, email);
+            dispatch(login(data.user));
+            navigate({to:"/dashboard"});
             setLoading(false);
             console.log("signin success")
         }catch (err) {

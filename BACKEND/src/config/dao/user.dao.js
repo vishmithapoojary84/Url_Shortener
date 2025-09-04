@@ -5,7 +5,11 @@ export const findUserByEmail=async(email)=>{
   return await User.findOne({email});
  
 }
- 
+export const findUserByEmailAndPassword=async(email,password)=>{
+
+  return await User.findOne({email}).select("+password");
+
+}
 export const findUserById=async(id)=>{
   return await User.findById(id);
 }
