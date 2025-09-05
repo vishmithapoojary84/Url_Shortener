@@ -2,22 +2,33 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FiCopy, FiCheck } from 'react-icons/fi';
 import { createShortUrl } from '../api/short_url.api';
+import { useSelector } from 'react-redux'
+import { useQueryClient } from '@tanstack/react-query';
 
 const UrlForm = () => {
   const [url, setUrl] = useState("https://www.google.com");
   const [shortUrl, setShortUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(null);
-
-
-  const handleSubmit = async () => {
-
+  const [customSlug, setCustomSlug] = useState("")
+  const {isAuthenticated} = useSelector((state) => state.auth)
+const queryClient = useQueryClient();
+const handleSubmit = async () => {
+  try {
     setCopied(false);
-//createshorturl is from *api short_url
-      const shorturl = await createShortUrl(url);
-      setShortUrl(shorturl);
-
-  };
+    const shorturl = await createShortUrl(url, customSlug);
+    setShortUrl(shorturl);
+    queryClient.invalidateQueries({ queryKey: ['userUrls'] });
+    setError(null);
+  } catch (err) {
+    if (err.response?.data?.message) {
+      // ✅ backend custom error message
+      setError(err.response.data.message);
+    } else {
+      setError(err.message || "An error occurred");
+    }
+  }
+};
 
   const handleCopy = () => {
     if (shortUrl) {
@@ -28,7 +39,7 @@ const UrlForm = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       <div>
         <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-1">
           Enter your URL
@@ -51,6 +62,21 @@ const UrlForm = () => {
         Shorten URL
       </button>
       {error && <p className="text-red-600 mt-2 font-semibold">{error}</p>}
+           {isAuthenticated && (
+          <div className="mt-4">
+            <label htmlFor="customSlug" className="block text-sm font-medium text-gray-700 mb-1">
+              Custom URL (optional)
+            </label>
+            <input
+              type="text"
+              id="customSlug"
+              value={customSlug}
+              onChange={(event) => setCustomSlug(event.target.value)}
+              placeholder="Enter custom slug"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        )}
       {shortUrl && (
   <div className="relative mt-6 max-w-xl w-full">
   <label htmlFor="shortUrl" className="block text-sm font-medium text-gray-700 mb-1">

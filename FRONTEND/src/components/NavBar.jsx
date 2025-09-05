@@ -12,7 +12,6 @@ const Navbar = () => {
               URL Shortener
             </Link>
           </div>
-          
           {/* Right side - Auth buttons */}
           <div className="flex items-center">
             {/* {(true) ? (

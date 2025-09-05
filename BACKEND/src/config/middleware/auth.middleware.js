@@ -8,7 +8,8 @@ export const authMiddleware = async (req, res, next) => {
   try {
     const decoded = verifyToken(token);
     console.log('Decoded token:', decoded);
-    req.user = decoded;
+    req.user ={ _id: decoded.id };
+   console.log("User set in req:", req.user); 
     next();
   } catch (error) {
     console.log('JWT verify error:', error.message);

@@ -2,6 +2,7 @@ import urlSchema from "../models/short_url_model.js";
 import { ConflictError } from "../utils/ErorrHandler.js";
 
 export const saveShortUrl = async (shortUrl, longUrl, userId) => {
+  console.log("Saving URL with userId:", userId);
   try {
     // Prepare data object for new document
     const data = {

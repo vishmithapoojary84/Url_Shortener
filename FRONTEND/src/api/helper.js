@@ -8,7 +8,7 @@ try{
   const {queryClient,store}=context
   const user =await queryClient.ensureQueryData({
     queryKey:['currentUser'],
-    queryF:getCurrentUser,
+    queryFn:getCurrentUser,
 
   })
 if(!user) return false

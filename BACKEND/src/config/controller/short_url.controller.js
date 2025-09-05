@@ -3,8 +3,9 @@ import { createShortUrlWithoutUser, createShortUrlWithUser } from '../services/s
 import wrapAsync from '../utils/trycatchrwrapper.js';  // 1 level up, utils folder
 
 export const createShortUrl = wrapAsync(async (req,res)=>{
+    console.log("User in controller:", req.user);
     const data = req.body
-    let shortUrl
+    let shortUrl;
     if(req.user){
         //creating url is in *services short url
         shortUrl = await createShortUrlWithUser(data.url,req.user._id,data.slug)
