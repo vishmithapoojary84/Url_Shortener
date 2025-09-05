@@ -28,8 +28,8 @@ const dispatch = useDispatch();
       //registeruser is in *api user api
       const data = await registerUser(name, password, email);
       setLoading(false);
-      dispatch(logindata.user))
-      navigate({to:"/dashboard"})
+      dispatch(login(data.user));
+      navigate({to:"/dashboard"});
       setLoading(false);
     } catch (err) {
       setLoading(false);

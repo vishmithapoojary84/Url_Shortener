@@ -1,16 +1,16 @@
 import { createRootRoute } from "@tanstack/react-router"
-import App from "../App"
-import { homePageRoute } from "./homePage"
-import { auth_route } from "./auth_route"
-import { dashboardRoute } from "./dashboard"
-import RootLayout from "../App"
+import RootLayout from "../RootLayout.jsx"  // ✅ fix path here
 
- export const rootRoute = createRootRoute({
-  // rootlayout is in *app.jsx file
-  component:RootLayout
+import { homePageRoute } from "./homePage.js"
+import { authRoute } from "./authRoute.js"
+import { dashboardRoute } from "./dashboard.js"
+
+export const rootRoute = createRootRoute({
+  component: RootLayout,
 })
- export const routeTree = rootRoute.addChildren([
+
+export const routeTree = rootRoute.addChildren([
   homePageRoute,
-  auth_route,
-  dashboardRoute
+  authRoute,
+  dashboardRoute,
 ])
