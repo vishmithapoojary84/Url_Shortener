@@ -10,7 +10,8 @@ export const register_user = wrapAsync( async (req, res) => {
 
     req.user = user
     res.cookie("accessToken", token, cookieOptions)
-    res.status(200).json({message:"register success"})
+    res.status(200).json({ user, message: "register success" });
+
 })
 
 export const login_user = wrapAsync( async (req, res) => {
@@ -29,6 +30,7 @@ export const logout_user = wrapAsync( async (req, res) => {
     res.status(200).json({message:"logout success"})
 })
 
-export const get_current_user = wrapAsync( async (req, res) => {
-    res.status(200).json({user:req.user})
-});
+export const get_current_user = wrapAsync(async (req, res) => {
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }});

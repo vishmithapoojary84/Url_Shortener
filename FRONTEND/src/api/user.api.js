@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosinstance";
 
-export const loginUser = async (password,email) => {
+export const loginUser = async (email,password) => {
  const {data}  = await axiosInstance.post("/api/auth/login", { email,password });
  return data;
 }
@@ -9,9 +9,9 @@ export const registerUser = async (name,password,email) => {
  return data;
 }
 export const logoutUser = async () => {
- const {data}  = await axiosInstance.get("/api/auth/logout");
- return data;
-}
+  const { data } = await axiosInstance.post("/api/auth/logout", {}, { withCredentials: true });
+  return data;
+};
 export const getCurrentUser =async()=>{
   const {data} =await axiosInstance.get("/api/auth/me");
   return data;
