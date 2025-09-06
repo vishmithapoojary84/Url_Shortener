@@ -1,18 +1,18 @@
 import React from 'react'
-import UrlForm from './Url_form'
-import UserUrl from './UserUrl'
+import UrlForm from '../components/UrlForm'
+import UserUrl from '../components/UserUrl'
 
-const DahboardPage = () => {
+const DashboardPage = () => {
   return (
-      <div>
-      <div className="min-h-screen  bg-gray-100 flex flex-col items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl">
-          <h1 className="text-2xl font-bold text-center mb-6">URL Shortener</h1>
-          <UrlForm/>
-          <UserUrl/>
-        </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start pt-24 p-4">
+      {/* pt-24 gives space from top (navbar) */}
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
+        <h1 className="text-2xl font-bold text-center mb-6">URL Shortener</h1>
+        <UrlForm />
+        <UserUrl />
       </div>
-    </div>)
+    </div>
+  )
 }
 
-export default DahboardPage
+export default DashboardPage

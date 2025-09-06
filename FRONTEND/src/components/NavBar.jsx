@@ -1,62 +1,124 @@
-import React from 'react';
-import { Link, useNavigate } from '@tanstack/react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../store/slice/authSlice';
-import { logoutUser } from '../api/user.api';
+import React, { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/slice/authSlice";
+import { logoutUser } from "../api/user.api";
+import { motion } from "framer-motion";
+
+// Wrap Link in motion
+const MotionLink = motion(Link);
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-const handleLogout = async () => {
-  try {
-    await logoutUser(); // clears cookie
-    dispatch(logout()); // clears Redux
-    navigate({ to: '/auth' }); // redirect
-  } catch (err) {
-    console.error("Logout failed", err);
-  }
-};
-
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      dispatch(logout());
+      navigate({ to: "/auth" });
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   return (
-    <nav className="bg-black border border-b-black">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Left side - App Name */}
-          <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-white">
+    <>
+      {/* Navbar */}
+      <nav className="bg-black text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link to="/" className="text-2xl font-bold">
               URL Shortener
             </Link>
-          </div>
 
-          {/* Right side - Auth buttons */}
-          <div className="flex items-center">
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-white">
-                  Welcome, {user?.name || 'User'}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+            {/* Desktop Links */}
+            <div className="hidden md:flex space-x-6 items-center">
+              <MotionLink whileHover={{ scale: 1.1 }} to="/">
+                Home
+              </MotionLink>
+              <MotionLink whileHover={{ scale: 1.1 }} to="/qr">
+                QR
+              </MotionLink>
+              <MotionLink whileHover={{ scale: 1.1 }} to="/dashboard">
+                Shortener
+              </MotionLink>
+
+              {isAuthenticated ? (
+                <>
+                  <span>Welcome, {user?.name || "User"}</span>
+                  <motion.button
+                    onClick={handleLogout}
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-red-500 px-3 py-1 rounded"
+                  >
+                    Logout
+                  </motion.button>
+                </>
+              ) : (
+                <MotionLink
+                  whileHover={{ scale: 1.05 }}
+                  to="/auth"
+                  className="bg-blue-500 px-3 py-1 rounded"
                 >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/auth"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                  Login
+                </MotionLink>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-2xl"
               >
+                {menuOpen ? "✖" : "☰"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="bg-gray-900 px-4 py-2 md:hidden space-y-2"
+          >
+            <Link to="/">Home</Link>
+            <Link to="/qr">QR</Link>
+            <Link to="/dashboard">Shortener</Link>
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="bg-red-800 px-3 py-1 rounded"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link to="/auth" className="bg-blue-500 px-3 py-1 rounded">
                 Login
               </Link>
             )}
+          </motion.div>
+        )}
+      </nav>
+
+      {/* Footer
+      <footer className="bg-gray-900 text-white py-4 mt-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
+          <span>&copy; {new Date().getFullYear()} URL Shortener</span>
+          <div className="space-x-4">
+            <Link to="/">Home</Link>
+            <Link to="/qr">QR</Link>
+            <Link to="/dashboard">Shortener</Link>
           </div>
         </div>
-      </div>
-    </nav>
+      </footer> */}
+    </>
   );
 };
 

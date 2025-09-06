@@ -1,20 +1,25 @@
-import React from 'react'
-import HomePage from './pages/Home_page.jsx'
-import LoginForm from './components/Login_form.jsx'
-import AuthPage from './pages/Auth_pages.jsx'
-import { Outlet } from '@tanstack/react-router'
-import Navbar from './components/NavBar.jsx'
-import LandingPage from './components/LandingPage.jsx'
-
+import React, { useState, useEffect } from "react";
+import Navbar from "./components/NavBar.jsx";
+import { Outlet } from "@tanstack/react-router";
+import Loader from "./components/Loader.jsx";
 
 const RootLayout = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // simulate page load or fetch data
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader />;
+
   return (
     <>
-      <Navbar/>
-    <LandingPage/>
-      <Outlet/>
+      <Navbar />
+      <Outlet />
     </>
-  )
-}
+  );
+};
 
-export default RootLayout
+export default RootLayout;
