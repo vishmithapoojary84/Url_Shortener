@@ -1,106 +1,116 @@
-import React, { useState } from 'react'
-import { createShortUrl } from '../api/short_url.api'
-import { useSelector } from 'react-redux'
-import { QueryClient } from '@tanstack/react-query'
-
+import React, { useState } from 'react';
+import { createShortUrl } from '../api/short_url.api';
+import { useSelector } from 'react-redux';
+import { QueryClient } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 const UrlForm = () => {
-  
-  const [url, setUrl] = useState("https://www.google.com")
-  const [shortUrl, setShortUrl] = useState()
-  const [copied, setCopied] = useState(false)
-  const [error, setError] = useState(null)
-  const [customSlug, setCustomSlug] = useState("")
-  const {isAuthenticated} = useSelector((state) => state.auth)
-const queryClient = new QueryClient()
+  const [url, setUrl] = useState('https://www.example.com');
+  const [shortUrl, setShortUrl] = useState();
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(null);
+  const [customSlug, setCustomSlug] = useState('');
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const queryClient = new QueryClient();
+
   const handleSubmit = async () => {
-    try{
-      const shortUrl = await createShortUrl(url,customSlug)
-      setShortUrl(shortUrl)
-      queryClient.invalidateQueries({queryKey: ['userUrls']})
-      setError(null)
-    }catch(err){
-      setError(err.message)
+    try {
+      const shortUrl = await createShortUrl(url, customSlug);
+      setShortUrl(shortUrl);
+      queryClient.invalidateQueries({ queryKey: ['userUrls'] });
+      setError(null);
+    } catch (err) {
+      setError(err.message);
     }
-  }
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shortUrl);
     setCopied(true);
-    
-    // Reset the copied state after 2 seconds
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  }
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="space-y-4">
-        <div>
-          <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-1">
-            Enter your URL
-          </label>
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-gray-900 p-6 rounded-2xl shadow-xl w-full max-w-md"
+    >
+      {error && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-4 p-2 bg-red-100 text-red-700 rounded-xl text-center text-sm"
+        >
+          {error}
+        </motion.div>
+      )}
+
+      {/* Original URL input */}
+      <div className="mb-3">
+        <label className="block text-gray-300 text-sm font-medium mb-1">Enter your URL</label>
+        <input
+          type="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="https://example.com"
+          className="w-full px-3 py-2 rounded-xl bg-gray-800 text-white border border-gray-700 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 outline-none text-sm"
+          required
+        />
+      </div>
+
+      {/* Custom URL (optional) */}
+      {isAuthenticated && (
+        <div className="mb-3">
+          <label className="block text-gray-300 text-sm font-medium mb-1">Custom URL (optional)</label>
           <input
-            type="url"
-            id="url"
-            value={url}
-            onInput={(event)=>setUrl(event.target.value)}
-            placeholder="https://example.com"
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="text"
+            value={customSlug}
+            onChange={(e) => setCustomSlug(e.target.value)}
+            placeholder="Enter custom slug"
+            className="w-full px-3 py-2 rounded-xl bg-gray-800 text-white border border-gray-700 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 outline-none text-sm"
           />
         </div>
-        <button
-          onClick={handleSubmit}
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-        >Shorten URL
-        </button>
-         {error && (
-          <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
-            {error}
-          </div>
-        )}
-        {isAuthenticated && (
-          <div className="mt-4">
-            <label htmlFor="customSlug" className="block text-sm font-medium text-gray-700 mb-1">
-              Custom URL (optional)
-            </label>
+      )}
+
+      {/* Shorten Button */}
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={handleSubmit}
+        className="w-full py-2.5 rounded-xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:brightness-110 text-white text-sm transition-all mb-3"
+      >
+        Shorten URL
+      </motion.button>
+
+      {/* Shortened URL */}
+      {shortUrl && (
+        <div className="mt-4">
+          <label className="block text-gray-300 text-sm font-medium mb-1">Your Shortened URL</label>
+          <div className="flex items-center">
             <input
               type="text"
-              id="customSlug"
-              value={customSlug}
-              onChange={(event) => setCustomSlug(event.target.value)}
-              placeholder="Enter custom slug"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              readOnly
+              value={shortUrl}
+              className="flex-1 px-3 py-2 rounded-l-xl bg-gray-800 text-white border border-gray-700 text-sm"
             />
+            <button
+              onClick={handleCopy}
+              className="px-3 py-2 rounded-r-xl bg-gray-800 border border-gray-700 flex items-center justify-center"
+            >
+              {copied ? (
+                <CheckIcon className="h-5 w-5 text-indigo-400" />
+              ) : (
+                <ClipboardIcon className="h-5 w-5 text-gray-300 hover:text-indigo-400" />
+              )}
+            </button>
           </div>
-        )}
-        {shortUrl && (
-          <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-2">Your shortened URL:</h2>
-            <div className="flex items-center">
-              <input
-                type="text"
-                readOnly
-                value={shortUrl}
-                className="flex-1 p-2 border border-gray-300 rounded-l-md bg-gray-50"
-              />
-               <button
-                onClick={handleCopy}
-                className={`px-4 py-2 rounded-r-md transition-colors duration-200 ${
-                  copied 
-                    ? 'bg-green-500 text-white hover:bg-green-600' 
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-              >
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-  )
-}
+        </div>
+      )}
+    </motion.div>
+  );
+};
 
-export default UrlForm
+export default UrlForm;

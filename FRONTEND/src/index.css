@@ -1,1 +1,6 @@
 @import "tailwindcss";
+/* index.css */
+/* Reset default spacing */
+html {
+  scroll-behavior: smooth;
+}
