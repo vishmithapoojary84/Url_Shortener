@@ -7,7 +7,7 @@ import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 const UrlForm = () => {
   const [url, setUrl] = useState('https://www.example.com');
-  const [shortUrl, setShortUrl] = useState();
+  const [shortUrl, setShortUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(null);
   const [customSlug, setCustomSlug] = useState('');
@@ -16,12 +16,12 @@ const UrlForm = () => {
 
   const handleSubmit = async () => {
     try {
-      const shortUrl = await createShortUrl(url, customSlug);
-      setShortUrl(shortUrl);
+      const short = await createShortUrl(url, customSlug);
+      setShortUrl(short); // backend should return full URL
       queryClient.invalidateQueries({ queryKey: ['userUrls'] });
       setError(null);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 
@@ -85,7 +85,7 @@ const UrlForm = () => {
         Shorten URL
       </motion.button>
 
-      {/* Shortened URL */}
+      {/* Shortened URL display */}
       {shortUrl && (
         <div className="mt-4">
           <label className="block text-gray-300 text-sm font-medium mb-1">Your Shortened URL</label>
@@ -107,6 +107,15 @@ const UrlForm = () => {
               )}
             </button>
           </div>
+          {/* Clickable link */}
+          <a
+            href={shortUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 block text-indigo-400 text-sm underline truncate"
+          >
+            {shortUrl}
+          </a>
         </div>
       )}
     </motion.div>
