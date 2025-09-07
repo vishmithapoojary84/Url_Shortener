@@ -1,6 +1,6 @@
 # URL Shortener & QR Generator (MERN Stack)
 
-**Live Demo:** [Click here to visit](https://url-shortener-nof6.onrender.com)
+**Live Demo:** [Click here to visit](https://url-shortener-frontend-3ly1.onrender.com/)
 
 This is a full-stack web application built with the **MERN stack** that allows users to shorten long URLs, manage their links, and generate QR codes for easy sharing. The project focuses on a smooth user experience with a modern frontend and secure backend handling. Users can register, log in, and view all their shortened URLs in a dashboard. Each URL can be easily copied or converted into a QR code for quick access.
 
