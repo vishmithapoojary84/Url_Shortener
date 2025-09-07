@@ -1,12 +1,6 @@
-// export const cookieOptions = {
-//   httpOnly: true,
-//   secure: process.env.NODE_ENV === "production",
-//   sameSite: "lax",
-//   maxAge: 1000 * 60 * 5 // 5 minutes
-// };
 export const cookieOptions = {
   httpOnly: true,
-  secure: false, // disable secure for local dev on HTTP
-  sameSite: 'Lax',
-  maxAge: 1000 * 60 * 5 // 5 minutes
+  secure: true,          // must be true on HTTPS
+  sameSite: 'None',      // allows cross-site requests
+  maxAge: 1000 * 60 * 5  // 5 minutes
 };
