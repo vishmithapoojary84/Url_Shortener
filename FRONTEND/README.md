@@ -1,12 +1,55 @@
-# React + Vite
+URL Shortener
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple URL shortening web application built with React (frontend) and Node.js + Express (backend) with MongoDB for storage.
 
-Currently, two official plugins are available:
+Live Demo: https://url-shortener-frontend-3ly1.onrender.com
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features
 
-## Expanding the ESLint configuration
+User authentication (login/register)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Create and manage short URLs
+
+Track user-specific URLs
+
+Redirect short URLs to original URLs
+
+Tech Stack
+
+Frontend: React, Vite, TailwindCSS, Axios
+
+Backend: Node.js, Express, MongoDB
+
+Authentication: JWT with cookies
+
+Setup
+
+Clone the repo:
+
+git clone https://github.com/vishmithapoojary84/Url_Shortener.git
+
+
+Install dependencies:
+
+cd FRONTEND
+npm install
+
+cd BACKEND
+npm install
+
+
+Create .env files in both frontend and backend with required variables.
+
+Run locally:
+
+# Backend
+cd BACKEND
+npm run dev
+
+# Frontend
+cd FRONTEND
+npm run dev
+
+Notes
+
+Only the frontend link is needed to access the app. Backend works automatically via API calls.
