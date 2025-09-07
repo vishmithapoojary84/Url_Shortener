@@ -5,7 +5,7 @@ import auth_routes from './src/config/routes/auth.routes.js';  // with .js
 import { redirectFromShortUrl } from './src/config/controller/short_url.controller.js';  // with .js
 import { errorHandler } from './src/config/utils/ErorrHandler.js';  // with .js
 import cors from 'cors';  // npm package - no path change
-import { attachUser } from './src/config/utils/attachUser.js  // with .js
+import { attachUser } from './src/config/utils/attachUser.js ';
 import cookieParser from 'cookie-parser';  // npm package - no path change
 import express from 'express';  // npm package - no path change
 import dotenv from 'dotenv';
